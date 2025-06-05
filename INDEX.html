@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Tamu Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .form-section, .guests-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .form-section h2, .guests-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #5a6fd8;
+        }
+
+        .guest-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .guest-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .guest-info {
+            color: #666;
+            margin-bottom: 3px;
+            font-size: 14px;
+        }
+
+        .guest-message {
+            background: white;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .guest-time {
+            font-size: 12px;
+            color: #999;
+            text-align: right;
+            margin-top: 8px;
+        }
+
+        .stats {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .export-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .export-btn:hover {
+            background: #218838;
+        }
+
+        .no-guests {
+            text-align: center;
+            color: #666;
+            padding: 30px;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📖 Buku Tamu Digital</h1>
+            <p>Silakan tinggalkan jejak kunjungan Anda</p>
+        </div>
+
+        <div class="main-content">
+            <div class="form-section">
+                <h2>✍️ Isi Buku Tamu</h2>
+                <form id="guestForm">
+                    <div class="form-group">
+                        <label for="name">Nama Lengkap *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Nomor Telepon</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="organization">Asal Instansi</label>
+                        <input type="text" id="organization" name="organization">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="purpose">Tujuan Kunjungan</label>
+                        <select id="purpose" name="purpose">
+                            <option value="">Pilih tujuan</option>
+                            <option value="Meeting">Meeting</option>
+                            <option value="Business">Bisnis</option>
+                            <option value="Personal">Pribadi</option>
+                            <option value="Interview">Interview</option>
+                            <option value="Other">Lainnya</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Pesan (Opsional)</label>
+                        <textarea id="message" name="message" rows="3" placeholder="Tinggalkan pesan..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">📝 Daftar Sebagai Tamu</button>
+                </form>
+            </div>
+
+            <div class="guests-section">
+                <h2>👥 Daftar Tamu</h2>
+                <div id="guestsList">
+                    <div class="no-guests">
+                        Belum ada tamu yang terdaftar.<br>
+                        Jadilah yang pertama!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <h3>Total Pengunjung Hari Ini</h3>
+            <div class="stats-number" id="totalGuests">0</div>
+            <div style="margin-top: 20px;">
+                <button id="exportExcel" class="export-btn">📊 Export ke Excel</button>
+                <button id="exportCSV" class="export-btn">📋 Export ke CSV</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let guests = [];
+
+        document.getElementById('guestForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Ambil data dari form
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const organization = document.getElementById('organization').value;
+            const purpose = document.getElementById('purpose').value;
+            const message = document.getElementById('message').value;
+            
+            // Buat object tamu baru
+            const guest = {
+                name: name,
+                email: email,
+                phone: phone,
+                organization: organization,
+                purpose: purpose,
+                message: message,
+                timestamp: new Date()
+            };
+            
+            // Tambah ke array
+            guests.unshift(guest);
+            
+            // Update tampilan
+            displayGuests();
+            updateStats();
+            
+            // Reset form
+            document.getElementById('guestForm').reset();
+            
+            // Success message
+            const btn = document.querySelector('.submit-btn');
+            const originalText = btn.textContent;
+            btn.textContent = '✅ Berhasil!';
+            btn.style.background = '#28a745';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '#667eea';
+            }, 2000);
+        });
+
+        function displayGuests() {
+            const list = document.getElementById('guestsList');
+            
+            if (guests.length === 0) {
+                list.innerHTML = '<div class="no-guests">Belum ada tamu yang terdaftar.<br>Jadilah yang pertama!</div>';
+                return;
+            }
+            
+            let html = '';
+            guests.forEach(function(guest) {
+                html += `
+                    <div class="guest-card">
+                        <div class="guest-name">${guest.name}</div>
+                        ${guest.email ? `<div class="guest-info">📧 ${guest.email}</div>` : ''}
+                        ${guest.phone ? `<div class="guest-info">📱 ${guest.phone}</div>` : ''}
+                        ${guest.organization ? `<div class="guest-info">🏢 ${guest.organization}</div>` : ''}
+                        ${guest.purpose ? `<div class="guest-info">🎯 ${guest.purpose}</div>` : ''}
+                        ${guest.message ? `<div class="guest-message">"${guest.message}"</div>` : ''}
+                        <div class="guest-time">🕒 ${formatTime(guest.timestamp)}</div>
+                    </div>
+                `;
+            });
+            
+            list.innerHTML = html;
+        }
+
+        function formatTime(date) {
+            return date.toLocaleString('id-ID');
+        }
+
+        function updateStats() {
+            document.getElementById('totalGuests').textContent = guests.length;
+        }
+
+        // Initialize
+        displayGuests();
+        updateStats();
+
+        // Export to Excel functionality
+        document.getElementById('exportExcel').addEventListener('click', function() {
+            if (guests.length === 0) {
+                alert('Tidak ada data untuk di-export!');
+                return;
+            }
+            exportToExcel();
+        });
+
+        // Export to CSV functionality
+        document.getElementById('exportCSV').addEventListener('click', function() {
+            if (guests.length === 0) {
+                alert('Tidak ada data untuk di-export!');
+                return;
+            }
+            exportToCSV();
+        });
+
+        function exportToExcel() {
+            // Prepare data untuk Excel
+            const data = [
+                ['No', 'Nama Lengkap', 'Email', 'Telepon', 'Instansi', 'Tujuan', 'Pesan', 'Waktu Kunjungan']
+            ];
+            
+            guests.forEach(function(guest, index) {
+                data.push([
+                    index + 1,
+                    guest.name || '',
+                    guest.email || '',
+                    guest.phone || '',
+                    guest.organization || '',
+                    guest.purpose || '',
+                    guest.message || '',
+                    formatTime(guest.timestamp)
+                ]);
+            });
+
+            // Buat Excel file menggunakan HTML table
+            let html = '<table>';
+            data.forEach(function(row) {
+                html += '<tr>';
+                row.forEach(function(cell) {
+                    html += '<td>' + cell + '</td>';
+                });
+                html += '</tr>';
+            });
+            html += '</table>';
+
+            // Download file
+            const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'rekap-buku-tamu-' + new Date().toISOString().split('T')[0] + '.xls';
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            alert('File Excel berhasil di-download!');
+        }
+
+        function exportToCSV() {
+            // Prepare CSV data
+            const headers = ['No', 'Nama Lengkap', 'Email', 'Telepon', 'Instansi', 'Tujuan', 'Pesan', 'Waktu Kunjungan'];
+            let csv = headers.join(',') + '\n';
+            
+            guests.forEach(function(guest, index) {
+                const row = [
+                    index + 1,
+                    '"' + (guest.name || '').replace(/"/g, '""') + '"',
+                    '"' + (guest.email || '').replace(/"/g, '""') + '"',
+                    '"' + (guest.phone || '').replace(/"/g, '""') + '"',
+                    '"' + (guest.organization || '').replace(/"/g, '""') + '"',
+                    '"' + (guest.purpose || '').replace(/"/g, '""') + '"',
+                    '"' + (guest.message || '').replace(/"/g, '""') + '"',
+                    '"' + formatTime(guest.timestamp) + '"'
+                ];
+                csv += row.join(',') + '\n';
+            });
+
+            // Download CSV
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'rekap-buku-tamu-' + new Date().toISOString().split('T')[0] + '.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            alert('File CSV berhasil di-download!\nBisa dibuka di Excel atau Google Sheets.');
+        }
+    </script>
+</body>
+</html>
